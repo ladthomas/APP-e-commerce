@@ -4,19 +4,19 @@
 
 - [X] 🏠 Page d'accueil
 - [X] 📰 Page d’actualités
-- [ ] 📰 Page d’une actualité
-- [ ] ✍️ Page d’inscription
-- [ ] 🔑 Page de connexion
-- [ ] 👤 Page de compte utilisateur
-- [ ] 💼 Page des offres
+- [X] 📰 Page d’une actualité
+- [X] ✍️ Page d’inscription
+- [X] 🔑 Page de connexion
+- [X] 👤 Page de compte utilisateur
+- [X] 💼 Page des offres
 - [ ] 💳 Page de succès de paiement
 - [ ] ❌ Page d’annulation de paiement
 - [ ] 🔒 Page d’accès au service (accessible uniquement aux abonnés)
 - [ ] 📝 Page de formulaire de contact
   - [ ] 🔑 Création d’une clé API pour Google Maps
-- [ ] 📄 Page de mentions légales
-- [ ] 📃 Page de CGU/CGV
-- [ ] 🔏 Page de politique de confidentialité
+- [X] 📄 Page de mentions légales
+- [X] 📃 Page de CGU/CGV
+- [X] 🔏 Page de politique de confidentialité
 
 ## ⚙️ Fonctionnalités
 
