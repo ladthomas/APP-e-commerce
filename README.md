@@ -2,8 +2,8 @@
 
 ## 📋 Prototype
 
-- [ ] 🏠 Page d'accueil
-- [ ] 📰 Page d’actualités
+- [X] 🏠 Page d'accueil
+- [X] 📰 Page d’actualités
 - [ ] 📰 Page d’une actualité
 - [ ] ✍️ Page d’inscription
 - [ ] 🔑 Page de connexion
