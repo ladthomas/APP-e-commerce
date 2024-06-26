@@ -1,4 +1,4 @@
-# 📱 Application mobile - Todolist
+# 📱 Application mobile 
 
 ## 📋 Prototype
 
