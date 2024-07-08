@@ -6,38 +6,23 @@
           <ion-title class="ion-text-center">CONNEXION</ion-title>
         </ion-toolbar>
       </ion-header>
-      
+
       <main class="main-content">
         <h1 class="ion-text-center">Bon retour</h1>
         <form class="ion-padding" @submit.prevent="login">
           <ion-item>
-            <ion-input
-              type="text"
-              placeholder="Nom d'utilisateur ou Email"
-              v-model="email"
-              required
-            ></ion-input>
+            <ion-input type="text" placeholder="Nom d'utilisateur ou Email" v-model="email" required></ion-input>
           </ion-item>
           <ion-item>
-            <ion-input
-              type="password"
-              placeholder="Mot de passe"
-              v-model="password"
-              required
-            ></ion-input>
+            <ion-input type="password" placeholder="Mot de passe" v-model="password" required></ion-input>
           </ion-item>
           <div class="ion-text-end forgot-password">
             <router-link to="/forgot-password">Mot de passe oublié ?</router-link>
           </div>
-          <ion-button
-            expand="full"
-            shape="round"
-            type="submit"
-            :disabled="!email || !password"
-            class="login-button"
-          >Connexion</ion-button>
+          <ion-button expand="full" shape="round" type="submit" :disabled="!email || !password"
+            class="login-button">Connexion</ion-button>
         </form>
-        
+
         <div class="alternative-login">
           <p>- OU Continuer avec -</p>
           <div class="social-login">
@@ -52,7 +37,7 @@
             </ion-button>
           </div>
         </div>
-        
+
         <div class="create-account">
           <router-link to="/inscription">Créer un compte Inscription</router-link>
         </div>
@@ -62,8 +47,8 @@
 </template>
 
 <script>
-import { defineComponent, ref } from 'vue';
-import { useRouter } from 'vue-router';
+import { defineComponent, ref, watch, onMounted, onBeforeUnmount } from "vue";
+import { useRouter } from "vue-router";
 import {
   IonPage,
   IonContent,
@@ -73,9 +58,11 @@ import {
   IonItem,
   IonInput,
   IonButton,
-  IonIcon
-} from '@ionic/vue';
+  IonIcon,
+} from "@ionic/vue";
 
+import { isConnected, setLocalStorage, setSessionStorage } from '../stores/'
+import { SignIn, SignUp } from "../services/auth.js";
 export default defineComponent({
   components: {
     IonPage,
@@ -89,17 +76,39 @@ export default defineComponent({
     IonIcon,
   },
   setup() {
-    const email = ref('');
-    const password = ref('');
+    const email = ref("");
+    const password = ref("");
     const router = useRouter();
-
-    const login = () => {
+    onMounted(() => {
+      if (isConnected()) {
+        return router.push("/homepage");
+      }
+      // Perform actions when the component mounts
+    });
+    const login = async () => {
       if (email.value && password.value) {
-        // Ajouter la logique d'authentification ici
-        router.push('/homepage');
+        try {
+          // Ajouter la logique d'authentification ici
+          let response = await SignIn({
+            email: email.value,
+            password: password.value,
+          });
+          if (response?.data?.token) {
+            setLocalStorage("auth", response?.data?.user)
+            setSessionStorage("token", response.data?.token)
+            //router.push("/homepage");
+            window.location.reload()
+          } else {
+            alert(response?.data?.message)
+          }
+        } catch (error) {
+          alert(error.response?.data?.message)
+          console.log(error.response?.data?.message)
+        }
+
       } else {
         // Gérer l'erreur de connexion
-        alert('Veuillez remplir les deux champs');
+        alert("Veuillez remplir les deux champs");
       }
     };
 

@@ -14,7 +14,10 @@
       <section class="new-section">
         <h2>LIVRAISON GRATUITE À PARTIR DE 200€ !</h2>
         <img src="@/ressources/top1.png" alt="New Section Image" />
-        <p>Le Lorem Ipsum est simplement du faux texte employé dans la composition et la mise en page avant impression. <strong>Le Lorem Ipsum est simplement du faux texte employé dans la composition et la mise en page avant impression.</strong></p>
+        <p>Le Lorem Ipsum est simplement du faux texte employé dans la composition et la mise en page avant impression.
+          <strong>Le Lorem Ipsum est simplement du faux texte employé dans la composition et la mise en page avant
+            impression.</strong>
+        </p>
       </section>
 
       <!-- Existing Content -->
@@ -90,8 +93,9 @@ import {
   IonCardTitle,
   IonCardContent
 } from "@ionic/vue";
-import { defineComponent } from 'vue';
-
+import { useRouter } from "vue-router";
+import { defineComponent, ref, watch, onMounted, onBeforeUnmount } from 'vue';
+import { isConnected } from '../stores/'
 export default defineComponent({
   components: {
     IonContent,
@@ -108,6 +112,42 @@ export default defineComponent({
     IonCardTitle,
     IonCardContent
   },
+  setup() {
+    const message = ref('Hello, Vue with Ionic!');
+    const description = ref('This is a description.');
+    const router = useRouter();
+
+
+    const changeMessage = () => {
+      message.value = 'Hello, World!';
+    };
+
+    // Similar to useEffect(() => { ... }, [])
+    onMounted(() => {
+      console.log('Component mounted');
+      if (!isConnected()) {
+        return router.push("/connexion");
+      }
+      // Perform actions when the component mounts
+    });
+
+    // Similar to useEffect(() => { return () => { ... } }, [])
+    onBeforeUnmount(() => {
+      console.log('Component will be destroyed');
+      // Perform cleanup actions
+    });
+
+    // Similar to useEffect(() => { ... }, [message])
+    watch(message, (newVal, oldVal) => {
+      console.log(`Message changed from "${oldVal}" to "${newVal}"`);
+    });
+
+    return {
+      message,
+      description,
+      changeMessage
+    };
+  }
 });
 </script>
 
@@ -116,30 +156,37 @@ export default defineComponent({
   text-align: center;
   padding: 20px;
 }
+
 .new-section img {
   width: 100%;
   border-radius: 10px;
   margin: 10px 0;
 }
-.events, .community {
+
+.events,
+.community {
   padding: 16px 0;
 }
-.events img, .community img {
+
+.events img,
+.community img {
   width: 100%;
   border-radius: 8px;
 }
+
 .center-button {
   display: flex;
   justify-content: center;
   margin-top: 10px;
 }
+
 .pink-button {
   --background: #ff4081;
   --border-radius: 25px;
   color: white;
 }
+
 .pink-button:hover {
   --background: #e04080;
 }
-
 </style>

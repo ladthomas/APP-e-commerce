@@ -6,7 +6,7 @@
           <ion-buttons slot="start">
             <ion-back-button default-href="/homepage"></ion-back-button>
           </ion-buttons>
-          <ion-title class="ion-text-center ion-align-items-center">Forgot Password?</ion-title>
+          <ion-title class="ion-text-center ion-align-items-center">Forgot Passwordss?</ion-title>
         </ion-toolbar>
       </ion-header>
 
@@ -14,23 +14,13 @@
         <h1 class="ion-text-center">Forgot Password?</h1>
         <form class="ion-padding" @submit.prevent="sendResetLink">
           <ion-item>
-            <ion-input
-              type="email"
-              placeholder="Enter your email address"
-              v-model="email"
-              required
-            ></ion-input>
+            <ion-input type="email" placeholder="Enter your email address" v-model="email" required></ion-input>
           </ion-item>
           <p class="ion-text-center info">
             * We will send you a message to set or reset your new password
           </p>
-          <ion-button
-            expand="full"
-            shape="round"
-            type="submit"
-            :disabled="!email"
-            class="submit-button"
-          >Submit</ion-button>
+          <ion-button expand="full" shape="round" type="submit" :disabled="!email"
+            class="submit-button">Submit</ion-button>
           <div class="ion-text-center" v-if="activeSpinner">
             <br />
             <br />
@@ -42,7 +32,7 @@
         </form>
         <div v-if="resetLinkSent" class="ion-text-center success-message">
           <h2>Success</h2>
-          <p>Check your email inbox to reset your password. The link will expire in 10 minutes.</p>
+          <p>Check your email inbox to reset your password. The new password is already send.</p>
           <ion-button expand="full" shape="round" routerLink="/login">
             Login
           </ion-button>
@@ -54,7 +44,6 @@
 
 <script>
 import { computed, ref } from "vue";
-import { useAuthStore } from "../stores/auth";
 import { useRouter } from "vue-router";
 import {
   useForm,
@@ -75,6 +64,7 @@ import {
   IonButtons,
   IonBackButton,
 } from '@ionic/vue';
+import { ResetPasswordUsers } from "../services/auth.js";
 
 defineRule("required", required);
 
@@ -83,7 +73,7 @@ configure({
     const messages = {
       required: "Ce champ est obligatoire",
     };
-   // return messages[ctx.rule.name as keyof typeof messages] ?? "This field is invalid";
+    // return messages[ctx.rule.name as keyof typeof messages] ?? "This field is invalid";
   },
 });
 
@@ -111,18 +101,7 @@ export default {
     const router = useRouter();
 
     const sendResetLink = async () => {
-      activeSpinner.value = true;
-      try {
-        await authStore.sendResetLink(email.value);
-        resetLinkSent.value = true;
-      } catch (err) {
-        error.value = true;
-        errorMessage.value = 'Failed to send reset link';
-      }
-      activeSpinner.value = false;
-      setTimeout(() => {
-        errorMessage.value = '';
-      }, 3000);
+      alert("Oui")
     };
 
     return {

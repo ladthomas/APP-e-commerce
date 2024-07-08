@@ -10,23 +10,13 @@
         <h1 class="ion-text-center">Mot de passe oublié ?</h1>
         <form class="ion-padding" @submit.prevent="sendResetLink">
           <ion-item>
-            <ion-input
-              type="email"
-              placeholder="Entrez votre adresse email"
-              v-model="email"
-              required
-            ></ion-input>
+            <ion-input type="email" placeholder="Entrez votre adresse email" v-model="email" required></ion-input>
           </ion-item>
           <p class="ion-text-center info">
             * Nous vous enverrons un message pour définir ou réinitialiser votre nouveau mot de passe
           </p>
-          <ion-button
-            expand="full"
-            shape="round"
-            type="submit"
-            :disabled="!email"
-            class="submit-button"
-          >Soumettre</ion-button>
+          <ion-button expand="full" shape="round" type="submit" :disabled="!email"
+            class="submit-button">Soumettre</ion-button>
           <div class="ion-text-center" v-if="activeSpinner">
             <br />
             <br />
@@ -38,7 +28,7 @@
         </form>
         <div v-if="resetLinkSent" class="ion-text-center success-message">
           <h2>Succès</h2>
-          <p>Vérifiez votre boîte mail pour réinitialiser votre mot de passe (le lien expirera dans 10 minutes).</p>
+          <p>Votre mot de passe vous à été transmis par e-mail.</p>
           <ion-button expand="full" shape="round" routerLink="/login">
             Se connecter
           </ion-button>
@@ -49,6 +39,7 @@
 </template>
 
 <script>
+//jeanphilippesara225@gmail.com
 import { defineComponent, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import {
@@ -62,7 +53,7 @@ import {
   IonButton,
   IonSpinner,
 } from '@ionic/vue';
-
+import { ResetPasswordUsers } from "../services/auth.js";
 export default defineComponent({
   components: {
     IonPage,
@@ -86,11 +77,21 @@ export default defineComponent({
     const sendResetLink = async () => {
       activeSpinner.value = true;
       try {
+        let response = await ResetPasswordUsers({
+          email: email.value
+        })
+        if (response.data.message) {
+          resetLinkSent.value = true;
+        } else {
+          error.value = true;
+          errorMessage.value = err.response?.data?.message;
+        }
+        console.log(response.data)
         // Add logic to send reset link here
-        resetLinkSent.value = true;
+        r
       } catch (err) {
         error.value = true;
-        errorMessage.value = "Échec de l'envoi du lien de réinitialisation";
+        errorMessage.value = err.response?.data?.message;
       }
       activeSpinner.value = false;
       setTimeout(() => {

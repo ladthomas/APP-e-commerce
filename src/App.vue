@@ -9,8 +9,9 @@
             <ion-menu-button></ion-menu-button>
           </ion-buttons>
           <ion-title>
+            stylish
             <!-- logo partout dans le code -->
-            <img src="http://fakeimg.pl/80x50/ff0000/" alt="Stylish" />
+           <!--<img src="http://fakeimg.pl/80x50/ff0000/" alt="Stylish" /> --> 
           </ion-title>
         </ion-toolbar>
       </ion-header>

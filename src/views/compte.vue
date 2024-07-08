@@ -9,63 +9,53 @@
 
       <main class="ion-padding">
         <div class="profile-picture">
-          <img :src="user.avatar ? user.avatar : 'https://avatars.dicebear.com/api/male/john.png'" alt="Profile Picture" />
+          <img :src="user.avatar ? user.avatar : 'https://avatars.dicebear.com/api/male/john.png'"
+            alt="Profile Picture" />
         </div>
 
         <h2 class="section-title">Personal Details</h2>
         <ion-item>
+          <ion-label>Nom</ion-label>
+          <ion-input type="text" v-model="user.name"></ion-input>
+        </ion-item>
+        <ion-item>
           <ion-label>Email Address</ion-label>
-          <ion-input type="text" v-model="user.email" disabled></ion-input>
+          <ion-input type="text" v-model="user.email"></ion-input>
         </ion-item>
         <ion-item>
           <ion-label>Password</ion-label>
-          <ion-input type="password" v-model="password" disabled></ion-input>
+          <ion-input type="password" v-model="password"></ion-input>
         </ion-item>
+        <br />
         <div class="change-password">
           <router-link to="/ResetPassword">Change Password</router-link>
         </div>
+        <br />
+        <ion-button expand="full" shape="round" @click="saveDetails">Update</ion-button>
+        <br />
+        <br />
+        <template v-if="user.subscriptionEnd">
+          <h2 class="section-title">Abonnement</h2>
+          <ion-item>
+            <ion-label>Abonnement actuelle</ion-label>
+            <ion-input type="text" v-model="user.currentSubscription">{{ user.subscriptionPlan }}</ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-label>Date de renouvellement</ion-label>
+            <ion-input type="text" v-model="user.dateRenewSubscription">{{ user.subscriptionEnd }}</ion-input>
+          </ion-item>
 
-        <h2 class="section-title">Business Address Details</h2>
-        <ion-item>
-          <ion-label>Pincode</ion-label>
-          <ion-input type="text" v-model="user.pincode"></ion-input>
-        </ion-item>
-        <ion-item>
-          <ion-label>Address</ion-label>
-          <ion-input type="text" v-model="user.address"></ion-input>
-        </ion-item>
-        <ion-item>
-          <ion-label>City</ion-label>
-          <ion-input type="text" v-model="user.city"></ion-input>
-        </ion-item>
-        <ion-item>
-          <ion-label>State</ion-label>
-          <ion-input type="text" v-model="user.state"></ion-input>
-        </ion-item>
-        <ion-item>
-          <ion-label>Country</ion-label>
-          <ion-input type="text" v-model="user.country"></ion-input>
-        </ion-item>
-
-        <h2 class="section-title">Bank Account Details</h2>
-        <ion-item>
-          <ion-label>Bank Account Number</ion-label>
-          <ion-input type="text" v-model="user.bankAccountNumber"></ion-input>
-        </ion-item>
-        <ion-item>
-          <ion-label>Account Holder's Name</ion-label>
-          <ion-input type="text" v-model="user.accountHolderName"></ion-input>
-        </ion-item>
-        <ion-item>
-          <ion-label>IFSC Code</ion-label>
-          <ion-input type="text" v-model="user.ifscCode"></ion-input>
-        </ion-item>
-
-        <ion-button expand="full" shape="round" @click="saveDetails">Save</ion-button>
+          <ion-button expand="full" shape="round" @click="cancelSubscription">Cancel subscription</ion-button>
+          <br />
+          <br />
+        </template>
+        <br />
+        <ion-button class="" expand="full" shape="round" @click="deleteAccount">Supprimer mon compte</ion-button>
       </main>
     </ion-content>
   </ion-page>
 </template>
+
 <script>
 import {
   IonContent,
@@ -78,9 +68,13 @@ import {
   IonItem,
   IonLabel
 } from "@ionic/vue";
-import { ref } from "vue";
+import { defineComponent, ref, reactive, onMounted } from "vue";
+import { UpdateUser, DeleteUser, GetUser } from "../services/user.js";
+import { useRouter } from "vue-router";
+import { isConnected, getLocalStorage, clearAllStore } from '../stores/';
+import { CancelSubscription } from '../services/subscription.js'; // Replace with your actual service path
 
-export default {
+export default defineComponent({
   name: "Account",
   components: {
     IonContent,
@@ -94,9 +88,12 @@ export default {
     IonLabel
   },
   setup() {
-    const user = ref({
+    const user = reactive({
       avatar: 'https://avatars.dicebear.com/api/male/john.png',
-      email: 'john.doe@example.com',
+      name: "",
+      email: "",
+      currentSubscription: "",
+      dateRenewSubscription: "",
       pincode: '123456',
       address: '123 Main St',
       city: 'Anytown',
@@ -106,20 +103,95 @@ export default {
       accountHolderName: 'John Doe',
       ifscCode: 'IFSC0001'
     });
-    const password = ref("********");
 
-    const saveDetails = () => {
-      alert("Details saved successfully (simulated)");
+    const password = ref("********");
+    const router = useRouter();
+
+    const saveDetails = async () => {
+      const userData = {
+        name: user.name,
+        email: user.email,
+        password: password.value === "********" ? null : password.value
+      };
+      try {
+
+
+        const response = await UpdateUser(userData);
+
+        if (response?.data) {
+          alert("Details saved successfully");
+          console.log(response);
+          if (userData.password) {
+            clearAllStore();
+          }
+          window.location.reload();
+        }
+      } catch (error) {
+        console.log(error);
+        console.log(userData);
+        alert("Failed to save details");
+      }
     };
+
+    const cancelSubscription = async () => {
+      try {
+        let resonse = await CancelSubscription()
+        console.log("resonse", resonse.data?.message)
+        if (resonse.data?.message) {
+          alert(resonse.data?.message)
+          setTimeout(() => {
+            window.location.reload()
+          }, 1000);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    const deleteAccount = async () => {
+      try {
+        const response = await DeleteUser({ userId: user.id });
+
+        if (response.data.message) {
+          alert("Account deleted successfully");
+          clearAllStore();
+          window.location.reload();
+        }
+      } catch (error) {
+        alert("Failed to delete account");
+      }
+    };
+
+    const getDetailsUser = async (userId) => {
+      try {
+        const response = await GetUser(userId);
+
+        if (response.data.id) {
+          Object.assign(user, response.data);
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    onMounted(() => {
+      if (!isConnected()) {
+        router.push("/connexion");
+      }
+      getDetailsUser(getLocalStorage("auth")?.id);
+    });
 
     return {
       user,
       password,
       saveDetails,
+      cancelSubscription,
+      deleteAccount
     };
   },
-};
+});
 </script>
+
 <style scoped>
 .profile-picture {
   display: flex;

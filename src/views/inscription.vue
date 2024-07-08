@@ -10,41 +10,26 @@
         <h1 class="ion-text-center">Créer un compte</h1>
         <form class="ion-padding" @submit.prevent="register">
           <ion-item>
-            <ion-input
-              type="text"
-              placeholder="Nom d'utilisateur ou Email"
-              v-model="usernameOrEmail"
-              required
-            ></ion-input>
+            <ion-input type="text" placeholder="Nom" v-model="name" required></ion-input>
           </ion-item>
           <ion-item>
-            <ion-input
-              type="password"
-              placeholder="Mot de passe"
-              v-model="password"
-              required
-            ></ion-input>
+            <ion-input type="text" placeholder="Email" v-model="Email" required></ion-input>
           </ion-item>
           <ion-item>
-            <ion-input
-              type="password"
-              placeholder="Confirmer le mot de passe"
-              v-model="confirmPassword"
-              required
-            ></ion-input>
+            <ion-input type="password" placeholder="Mot de passe" v-model="password" required></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-input type="password" placeholder="Confirmer le mot de passe" v-model="confirmPassword"
+              required></ion-input>
           </ion-item>
           <p class="ion-text-center terms">
-            En cliquant sur le bouton <a href="/register">Inscription</a>, vous acceptez l'offre publique.
+            En cliquant sur le bouton <a href="/register">Inscription</a>, vous
+            acceptez l'offre publique.
           </p>
-          <ion-button
-            expand="full"
-            shape="round"
-            type="submit"
-            :disabled="!usernameOrEmail || !password || password !== confirmPassword"
-            class="register-button"
-          >Créer un compte</ion-button>
+          <ion-button expand="full" shape="round" type="submit" :disabled="!name || !Email || !password || password !== confirmPassword
+            " class="register-button">Créer un compte</ion-button>
         </form>
-        
+
         <div class="alternative-login">
           <p>- OU Continuer avec -</p>
           <div class="social-login">
@@ -59,7 +44,7 @@
             </ion-button>
           </div>
         </div>
-        
+
         <div class="create-account">
           <router-link to="/login">J'ai déjà un compte Connexion</router-link>
         </div>
@@ -69,8 +54,8 @@
 </template>
 
 <script>
-import { defineComponent, ref } from 'vue';
-import { useRouter } from 'vue-router';
+import { defineComponent, ref, watch, onMounted, onBeforeUnmount } from "vue";
+import { useRouter } from "vue-router";
 import {
   IonPage,
   IonHeader,
@@ -80,10 +65,11 @@ import {
   IonInput,
   IonItem,
   IonButton,
-  IonIcon
-} from '@ionic/vue';
-import { logoGoogle, logoApple, logoFacebook } from 'ionicons/icons';
-
+  IonIcon,
+} from "@ionic/vue";
+import { logoGoogle, logoApple, logoFacebook } from "ionicons/icons";
+import { SignUp } from "../services/auth.js";
+import { setLocalStorage, isConnected, setSessionStorage } from "../stores";
 export default defineComponent({
   components: {
     IonPage,
@@ -94,32 +80,67 @@ export default defineComponent({
     IonInput,
     IonItem,
     IonButton,
-    IonIcon
+    IonIcon,
   },
   setup() {
-    const usernameOrEmail = ref('');
-    const password = ref('');
-    const confirmPassword = ref('');
+    const Email = ref("");
+    const name = ref("");
+    const password = ref("");
+    const confirmPassword = ref("");
     const router = useRouter();
+    onMounted(() => {
+      if (isConnected()) {
+        return router.push("/homepage");
+      }
+      // Perform actions when the component mounts
+    });
+    const register = async () => {
+      if (
+        Email.value &&
+        name.value &&
+        password.value &&
+        password.value === confirmPassword.value
+      ) {
+        let dataToSend = {
+          email: Email.value,
+          name: name.value,
+          password: password.value,
+          confirmPassword: confirmPassword.value
+        }
+        try {
+          // Add registration logic here
+          if (!Object.values(dataToSend).includes(undefined)) {
+            // Ajouter la logique d'authentification ici
+            let response = await SignUp(dataToSend);
+            console.log('response', response.data)
+            if (response?.data?.message) {
+              setLocalStorage("auth", response?.data?.user)
+              setSessionStorage("token", response.data?.token)
+              router.push("/homepage");
+              window.location.reload()
+            } else {
+              alert("Ce compte existe déjà")
+            }
+          }
+        } catch (error) {
+          alert(error.response?.data?.message)
+          console.log(error.response?.data?.message)
+        }
 
-    const register = () => {
-      if (usernameOrEmail.value && password.value && password.value === confirmPassword.value) {
-        // Add registration logic here
-        router.push('/homepage');
       } else {
         // Handle registration error
-        alert('Veuillez vérifier les champs');
+        alert("Veuillez vérifier les champs");
       }
     };
-
     return {
-      usernameOrEmail,
+      Email,
+      name,
       password,
       confirmPassword,
       register,
       logoGoogle,
       logoApple,
-      logoFacebook
+      logoFacebook,
     };
   },
 });
