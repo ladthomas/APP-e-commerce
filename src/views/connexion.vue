@@ -23,7 +23,7 @@
             class="login-button">Connexion</ion-button>
         </form>
 
-        <div class="alternative-login">
+     <!-- <div class="alternative-login">
           <p>- OU Continuer avec -</p>
           <div class="social-login">
             <ion-button fill="clear">
@@ -36,7 +36,7 @@
               <ion-icon name="logo-facebook"></ion-icon>
             </ion-button>
           </div>
-        </div>
+        </div>  -->
 
         <div class="create-account">
           <router-link to="/inscription">Créer un compte Inscription</router-link>
