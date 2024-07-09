@@ -13,7 +13,7 @@
             alt="Profile Picture" />
         </div>
 
-        <h2 class="section-title">Personal Details</h2>
+        <h2 class="section-title">Détails personnels</h2>
         <ion-item>
           <ion-label>Nom</ion-label>
           <ion-input type="text" v-model="user.name"></ion-input>
@@ -31,7 +31,7 @@
           <router-link to="/ResetPassword">Change Password</router-link>
         </div>
         <br />
-        <ion-button expand="full" shape="round" @click="saveDetails">Update</ion-button>
+        <ion-button expand="full" shape="round" @click="saveDetails">Mise à jour</ion-button>
         <br />
         <br />
         <template v-if="user.subscriptionEnd">
@@ -45,7 +45,7 @@
             <ion-input type="text" v-model="user.dateRenewSubscription">{{ user.subscriptionEnd }}</ion-input>
           </ion-item>
 
-          <ion-button expand="full" shape="round" @click="cancelSubscription">Cancel subscription</ion-button>
+          <ion-button expand="full" shape="round" @click="cancelSubscription">Annuler l'abonnement</ion-button>
           <br />
           <br />
         </template>
@@ -72,7 +72,7 @@ import { defineComponent, ref, reactive, onMounted } from "vue";
 import { UpdateUser, DeleteUser, GetUser } from "../services/user.js";
 import { useRouter } from "vue-router";
 import { isConnected, getLocalStorage, clearAllStore } from '../stores/';
-import { CancelSubscription } from '../services/subscription.js'; // Replace with your actual service path
+import { CancelSubscription } from '../services/subscription.js'; 
 
 export default defineComponent({
   name: "Account",
