@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from "@ionic/vue-router";
-//import { useAuthStore } from "@/stores/auth.js";
+
 
 const routes = [
   {
@@ -37,11 +37,11 @@ const routes = [
     name: "abonnement",
     component: () => import("@/views/abonnement.vue"),
   },
-  /*{
-   path: "/news",
-    name: "News",
-    component: () => import("@/views/News.vue"),
-  },*/
+  {
+   path: "/cancel",
+    name: "cancel",
+    component: () => import("@/views/cancel.vue"),
+  },
   {
     path: "/actualite",
     name: "actualite",
@@ -61,9 +61,9 @@ const routes = [
     },
   },
   {
-    path: "/dashboard",
-    name: "Dashboard",
-    component: () => import("@/views/Dashboard.vue"),
+    path: "/success",
+    name: "success",
+    component: () => import("@/views/success.vue"),
     meta: {
       requiresAuth: true,
     },
@@ -97,16 +97,7 @@ const routes = [
     name: "ResetPassword",
     component: () => import("@/views/ResetPassword.vue"),
   },
-  //{
-   // path: "/checkout/success",
-   // name: "CheckoutSuccess",
-   // component: () => import("@/views/checkout/CheckoutSuccess.vue"),
- // },
- //{
-  //  path: "/checkout/failed",
-    //name: "CheckoutFail",
-   // component: () => import("@/views/checkout/CheckoutFail.vue"),
-  //},
+  
   {
     path: "/:catchAll(.*)",
     redirect: "/homepage",
@@ -118,21 +109,6 @@ const router = createRouter({
   routes,
 });
 
-/*router.beforeEach((to, from, next) => {
-  //const authStore = useAuthStore();
-  if (to.meta.requiresAuth && !authStore.loggedIn) {
-    return next({
-      path: "/login",
-    });
-  }
 
-  if (to.meta.requiresGuest && authStore.loggedIn) {
-    return next({
-      path: "/homepage",
-    });
-  }
-
-  next();
-});*/
 
 export default router;
