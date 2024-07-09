@@ -28,7 +28,7 @@
         </ion-item>
         <br />
         <div class="change-password">
-          <router-link to="/ResetPassword">Change Password</router-link>
+          <router-link to="/forgot-password">Change Password</router-link>
         </div>
         <br />
         <ion-button expand="full" shape="round" @click="saveDetails">Mise à jour</ion-button>

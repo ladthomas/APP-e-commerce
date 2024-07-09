@@ -36,7 +36,33 @@
 </template>
 
 <script>
-export default {
+import { defineComponent } from 'vue';
+import { 
+  IonPage, 
+  IonHeader, 
+  IonToolbar, 
+  IonTitle, 
+  IonContent, 
+  IonItem, 
+  IonLabel, 
+  IonInput, 
+  IonTextarea, 
+  IonButton 
+} from '@ionic/vue';
+
+export default defineComponent({
+  components: {
+    IonPage,
+    IonHeader,
+    IonToolbar,
+    IonTitle,
+    IonContent,
+    IonItem,
+    IonLabel,
+    IonInput,
+    IonTextarea,
+    IonButton
+  },
   data() {
     return {
       contact: {
@@ -50,13 +76,13 @@ export default {
     onSubmit() {
       if (this.contact.name && this.contact.email && this.contact.message) {
         console.log('Contact Form Data:', this.contact);
-        // Add your form submission logic here
+        
       } else {
-        alert('Please fill in all fields');
+        alert('Veuillez remplir tous les champs');
       }
     }
   }
-};
+});
 </script>
 
 <style scoped>

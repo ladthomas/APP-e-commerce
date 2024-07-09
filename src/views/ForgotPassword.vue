@@ -39,7 +39,7 @@
 </template>
 
 <script>
-//jeanphilippesara225@gmail.com
+//
 import { defineComponent, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import {

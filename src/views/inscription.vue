@@ -22,17 +22,17 @@
             <ion-input type="password" placeholder="Confirmer le mot de passe" v-model="confirmPassword"
               required></ion-input>
           </ion-item>
-          <p class="ion-text-center terms">
+          <!--<p class="ion-text-center terms">
             En cliquant sur le bouton <a href="/register">Inscription</a>, vous
             acceptez l'offre publique.
-          </p>
+          </p> -->
           <ion-button expand="full" shape="round" type="submit" :disabled="!name || !Email || !password || password !== confirmPassword
             " class="register-button">Créer un compte</ion-button>
         </form>
 
         <div class="alternative-login">
           <p>- OU Continuer avec -</p>
-          <div class="social-login">
+       <!--  <div class="social-login">
             <ion-button fill="clear">
               <ion-icon name="logo-google"></ion-icon>
             </ion-button>
@@ -42,7 +42,7 @@
             <ion-button fill="clear">
               <ion-icon name="logo-facebook"></ion-icon>
             </ion-button>
-          </div>
+          </div> -->
         </div>
 
         <div class="create-account">
@@ -92,7 +92,7 @@ export default defineComponent({
       if (isConnected()) {
         return router.push("/homepage");
       }
-      // Perform actions when the component mounts
+      // 
     });
     const register = async () => {
       if (

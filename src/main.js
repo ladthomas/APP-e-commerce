@@ -2,6 +2,8 @@ import { createApp } from 'vue';
 import App from './App.vue';
 import router from './router';
 import { IonicVue } from '@ionic/vue';
+import { addIcons } from 'ionicons';
+import { businessOutline, locationOutline, callOutline, serverOutline, mailOutline, homeOutline, cartOutline, newspaperOutline, personOutline } from 'ionicons/icons';
 
 // Import de Ionic CSS
 import '@ionic/vue/css/core.css';
@@ -18,16 +20,17 @@ import '@ionic/vue/css/display.css';
 // Import des thèmes de variables
 import './theme/variables.css';
 
-// Import des icônes
-import { addIcons } from 'ionicons';
-import { homeOutline, cartOutline, newspaperOutline, mailOutline, personOutline } from 'ionicons/icons';
-
+// Ajouter les icônes Ionicons
 addIcons({
   'home-outline': homeOutline,
   'cart-outline': cartOutline,
   'newspaper-outline': newspaperOutline,
   'mail-outline': mailOutline,
-  'person-outline': personOutline
+  'person-outline': personOutline,
+  'business-outline': businessOutline,
+  'location-outline': locationOutline,
+  'call-outline': callOutline,
+  'server-outline': serverOutline
 });
 
 const app = createApp(App)
