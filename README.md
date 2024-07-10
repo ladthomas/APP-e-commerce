@@ -2,13 +2,13 @@
 
 ## 📋 Prototype
 
-- [X] 🏠 Page d'accueil
-- [X] 📰 Page d’actualités
-- [X] 📰 Page d’une actualité
-- [X] ✍️ Page d’inscription
-- [X] 🔑 Page de connexion
-- [X] 👤 Page de compte utilisateur
-- [X] 💼 Page des offres
+- [ ] 🏠 Page d'accueil
+- [ ] 📰 Page d’actualités
+- [ ] 📰 Page d’une actualité
+- [ ] ✍️ Page d’inscription
+- [ ] 🔑 Page de connexion
+- [ ] 👤 Page de compte utilisateur
+- [ ] 💼 Page des offres
 - [ ] 💳 Page de succès de paiement
 - [ ] ❌ Page d’annulation de paiement
 - [ ] 🔒 Page d’accès au service (accessible uniquement aux abonnés)
